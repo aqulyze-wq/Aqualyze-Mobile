@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/sensor_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
   final AquaUser user;
   final double temperature;
   final double ph;
   final int turbidity;
+  final List<dynamic> history;
   final ValueChanged<AppView> onNavigate;
 
   const DashboardScreen({
@@ -17,6 +19,7 @@ class DashboardScreen extends StatefulWidget {
     required this.temperature,
     required this.ph,
     required this.turbidity,
+    required this.history,
     required this.onNavigate,
   });
 
@@ -66,6 +69,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.history.length);
+
     return Stack(
       children: [
         ListView(
@@ -85,6 +90,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // Main status card
             _StatusCard(),
+            const SizedBox(height: 16),
+
+            GlassCard(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Grafik Suhu",
+                    style: AquaText.title,
+                  ),
+                  const SizedBox(height: 16),
+                  SensorChart(
+                    history: widget.history,
+                  ),
+                ],
+              ),
+            ),
+
             const SizedBox(height: 16),
 
             // Metrics grid

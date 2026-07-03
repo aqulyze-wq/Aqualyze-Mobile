@@ -58,4 +58,23 @@ class ApiService {
 
     return null;
   }
+
+  static Future<List<dynamic>?> getHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+
+    final response = await http.get(
+      Uri.parse("$baseUrl/history"),
+      headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+
+    return null;
+  }
 }

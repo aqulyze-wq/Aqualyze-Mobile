@@ -42,6 +42,8 @@ class _AppRootState extends State<_AppRoot> {
   int _turbidity = 12;
   String _lastSync = '10:45 AM';
 
+  List<dynamic> _history = [];
+
   List<AquaNotification> _notifications = const [
     AquaNotification(
       id: 'turb-1',
@@ -88,6 +90,7 @@ class _AppRootState extends State<_AppRoot> {
     });
 
     _loadLatestSensor();
+    _loadHistory();
   }
 
   Future<void> _loadLatestSensor() async {
@@ -108,6 +111,16 @@ class _AppRootState extends State<_AppRoot> {
         final m = now.minute.toString().padLeft(2, '0');
         final ap = now.hour >= 12 ? 'PM' : 'AM';
         _lastSync = '$h:$m $ap';
+      });
+    }
+  }
+
+  Future<void> _loadHistory() async {
+    final data = await ApiService.getHistory();
+
+    if (data != null) {
+      setState(() {
+        _history = data;
       });
     }
   }
@@ -189,6 +202,7 @@ class _AppRootState extends State<_AppRoot> {
           temperature: _temperature,
           ph: _ph,
           turbidity: _turbidity,
+          history: _history,
           onNavigate: (tab) => setState(() => _activeTab = tab),
         ),
       AppView.monitoring => MonitoringScreen(
