@@ -1,3 +1,16 @@
+// ================================================================
+// Nama Sistem  : Aqualyze - Smart Water Monitoring System
+// Author       : Refan Rustoni Putra
+// NIM          : 10824005
+// Versi        : 1.3.0
+// Tahun        : 2026
+// Ownership    : Capstone Project - Universitas
+// Deskripsi    : Sistem monitoring kualitas air berbasis IoT
+//                yang menampilkan data suhu, pH, dan kekeruhan
+//                secara realtime melalui aplikasi mobile dan web.
+// ================================================================
+
+// ======================= Library ================================
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../models/models.dart';
@@ -90,25 +103,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // Main status card
             _StatusCard(),
-            const SizedBox(height: 16),
-
-            GlassCard(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Grafik Suhu",
-                    style: AquaText.title,
-                  ),
-                  const SizedBox(height: 16),
-                  SensorChart(
-                    history: widget.history,
-                  ),
-                ],
-              ),
-            ),
-
             const SizedBox(height: 16),
 
             // Metrics grid
@@ -241,6 +235,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             const SizedBox(height: 20),
+
+            GlassCard(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Grafik Suhu", style: AquaText.title),
+                  const SizedBox(height: 16),
+                  SensorChart(
+                    history: widget.history,
+                    field: "suhu",
+                    color: Colors.red,
+                    minY: 10,
+                    maxY: 35,
+                    interval: 5,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            GlassCard(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Grafik pH", style: AquaText.title),
+                  const SizedBox(height: 16),
+                  SensorChart(
+                    history: widget.history,
+                    field: "ph",
+                    color: Colors.blue,
+                    minY: 6.5,
+                    maxY: 9,
+                    interval: 0.5,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            GlassCard(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Grafik Kekeruhan", style: AquaText.title),
+                  const SizedBox(height: 16),
+                  SensorChart(
+                    history: widget.history,
+                    field: "kekeruhan",
+                    color: Colors.orange,
+                    minY: 0,
+                    maxY: 10,
+                    interval: 2,
+                  ),
+                ],
+              ),
+            ),
 
             // Camera
             Text('KAMERA PEMANTAU', style: AquaText.label),

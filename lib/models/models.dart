@@ -1,3 +1,14 @@
+// ================================================================
+// Nama Sistem  : Aqualyze - Smart Water Monitoring System
+// Author       : Refan Rustoni Putra
+// NIM          : 10824005
+// Versi        : 1.3.0
+// Tahun        : 2026
+// Ownership    : Capstone Project - Universitas
+// Deskripsi    : Sistem monitoring kualitas air berbasis IoT
+//                yang menampilkan data suhu, pH, dan kekeruhan
+//                secara realtime melalui aplikasi mobile dan web.
+// ================================================================
 class AquaUser {
   final String name;
   final String email;
