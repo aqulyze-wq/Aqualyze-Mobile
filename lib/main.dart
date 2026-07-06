@@ -49,6 +49,9 @@ class _AppRootState extends State<_AppRoot> {
   AquaUser? _user;
   AppView _activeTab = AppView.dashboard;
 
+  String _statusTemperature = "Normal";
+  String _statusPh = "Normal";
+  String _statusTurbidity = "Normal";
   // Shared telemetry state
   double _temperature = 28.5;
   double _ph = 7.2;
@@ -116,6 +119,10 @@ class _AppRootState extends State<_AppRoot> {
         _temperature = (data["suhu"] as num).toDouble();
         _ph = (data["ph"] as num).toDouble();
         _turbidity = data["kekeruhan"] as int;
+
+        _statusTemperature = data["status_suhu"] ?? "Normal";
+        _statusPh = data["status_ph"] ?? "Normal";
+        _statusTurbidity = data["status_kekeruhan"] ?? "Normal";
 
         print("SETSTATE SUHU = $_temperature");
 
@@ -215,6 +222,9 @@ class _AppRootState extends State<_AppRoot> {
           temperature: _temperature,
           ph: _ph,
           turbidity: _turbidity,
+          statusTemperature: _statusTemperature,
+          statusPh: _statusPh,
+          statusTurbidity: _statusTurbidity,
           history: _history,
           onNavigate: (tab) => setState(() => _activeTab = tab),
         ),

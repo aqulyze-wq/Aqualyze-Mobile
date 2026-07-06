@@ -23,6 +23,11 @@ class DashboardScreen extends StatefulWidget {
   final double temperature;
   final double ph;
   final int turbidity;
+
+  final String statusTemperature;
+  final String statusPh;
+  final String statusTurbidity;
+
   final List<dynamic> history;
   final ValueChanged<AppView> onNavigate;
 
@@ -32,6 +37,9 @@ class DashboardScreen extends StatefulWidget {
     required this.temperature,
     required this.ph,
     required this.turbidity,
+    required this.statusTemperature,
+    required this.statusPh,
+    required this.statusTurbidity,
     required this.history,
     required this.onNavigate,
   });
@@ -80,6 +88,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return 'Selamat Malam';
   }
 
+  Widget _buildStatusBadge(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return StatusBadge.normal();
+
+      case "warning":
+        return StatusBadge.warning();
+
+      case "danger":
+        return StatusBadge.danger();
+
+      default:
+        return StatusBadge.normal();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.history.length);
@@ -116,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     value: '$_liveTemp',
                     unit: '°C',
                     label: 'Suhu Air',
-                    badge: StatusBadge.normal(),
+                    badge: _buildStatusBadge(widget.statusTemperature),
                     onTap: () => widget.onNavigate(AppView.monitoring),
                   ),
                 ),
@@ -129,7 +153,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     value: '$_livePh',
                     unit: 'pH',
                     label: 'Tingkat pH',
-                    badge: StatusBadge.normal(),
+                    badge: _buildStatusBadge(widget.statusPh),
                     onTap: () => widget.onNavigate(AppView.monitoring),
                   ),
                 ),
@@ -188,7 +212,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      StatusBadge.warning(),
+                      _buildStatusBadge(widget.statusTurbidity),
                       const SizedBox(height: 4),
                       Text('2m lalu', style: AquaText.micro),
                     ],

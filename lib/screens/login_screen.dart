@@ -26,50 +26,45 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailCtrl    = TextEditingController(text: 'zaki@aqualyze.io');
+  final _emailCtrl = TextEditingController(text: 'zaki@aqualyze.io');
   final _passwordCtrl = TextEditingController(text: 'password123');
-  bool _showPassword  = false;
-  bool _rememberMe    = true;
-  bool _isLoading     = false;
-  bool _loginDone     = false;
+  bool _showPassword = false;
+  bool _rememberMe = true;
+  bool _isLoading = false;
+  bool _loginDone = false;
 
   Future<void> _handleLogin() async {
     if (_emailCtrl.text.isEmpty || _passwordCtrl.text.isEmpty) {
-    return;
-  }
+      return;
+    }
 
-  setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
 
-  final result = await ApiService.login(
-  _emailCtrl.text.trim(),
-  _passwordCtrl.text,
-  );
-
-  if (!mounted) return;
-
-  setState(() => _isLoading = false);
-
-  if (result != null) {
-
-    setState(() => _loginDone = true);
-
-    await Future.delayed(const Duration(milliseconds: 700));
+    final result = await ApiService.login(
+      _emailCtrl.text.trim(),
+      _passwordCtrl.text,
+    );
 
     if (!mounted) return;
 
-    widget.onLoginSuccess(result["user"]);
+    setState(() => _isLoading = false);
 
-  } else {
+    if (result != null) {
+      setState(() => _loginDone = true);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Email atau Password salah"),
-        backgroundColor: Colors.red,
-      ),
-    );
+      await Future.delayed(const Duration(milliseconds: 700));
 
-  }
+      if (!mounted) return;
 
+      widget.onLoginSuccess(result["user"]);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Email atau Password salah"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -87,7 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           // Wave bg at bottom
           Positioned(
-            bottom: 0, left: 0, right: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.3,
               decoration: BoxDecoration(
@@ -204,8 +201,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.grey[400],
                                 size: 20,
                               ),
-                              onPressed: () =>
-                                  setState(() => _showPassword = !_showPassword),
+                              onPressed: () => setState(
+                                  () => _showPassword = !_showPassword),
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -215,9 +212,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Checkbox(
                                 value: _rememberMe,
-                                onChanged: (v) => setState(() => _rememberMe = v ?? true),
+                                onChanged: (v) =>
+                                    setState(() => _rememberMe = v ?? true),
                                 activeColor: AquaColors.primary,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
                               ),
                               Text(
                                 'Ingat perangkat ini selama 30 hari',
@@ -229,7 +228,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.zero,
                                   minimumSize: Size.zero,
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 child: const Text(
                                   'Lupa Kata Sandi?',
@@ -275,11 +275,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                       width: 22,
                                       height: 22,
                                       child: CircularProgressIndicator(
-                                          color: Colors.white, strokeWidth: 2.5),
+                                          color: Colors.white,
+                                          strokeWidth: 2.5),
                                     )
                                   : _loginDone
                                       ? const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Icon(Icons.check_circle_rounded,
                                                 size: 20, color: Colors.white),
@@ -293,7 +295,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ],
                                         )
                                       : const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Text('Masuk',
                                                 style: TextStyle(
@@ -337,12 +340,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (final label in ['Kebijakan Privasi', 'Ketentuan Layanan', 'Bantuan'])
+                        for (final label in [
+                          'Kebijakan Privasi',
+                          'Ketentuan Layanan',
+                          'Bantuan'
+                        ])
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
                               label,
-                              style: AquaText.micro.copyWith(color: Colors.grey[400]),
+                              style: AquaText.micro
+                                  .copyWith(color: Colors.grey[400]),
                             ),
                           ),
                       ],
