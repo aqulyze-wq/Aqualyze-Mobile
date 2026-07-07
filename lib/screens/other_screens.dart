@@ -26,6 +26,9 @@ class MonitoringScreen extends StatefulWidget {
   final int turbidity;
   final String lastSyncTime;
   final VoidCallback onRefresh;
+  final String statusTemperature;
+  final String statusPh;
+  final String statusTurbidity;
 
   const MonitoringScreen({
     super.key,
@@ -34,6 +37,9 @@ class MonitoringScreen extends StatefulWidget {
     required this.turbidity,
     required this.lastSyncTime,
     required this.onRefresh,
+    required this.statusTemperature,
+    required this.statusPh,
+    required this.statusTurbidity,
   });
 
   @override
@@ -50,6 +56,93 @@ class _MonitoringScreenState extends State<MonitoringScreen> {
     if (mounted) setState(() => _isRefreshing = false);
   }
 
+  Widget _buildStatusBadge(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return StatusBadge.normal();
+      case "warning":
+        return StatusBadge.warning();
+      case "danger":
+        return StatusBadge.danger();
+      default:
+        return StatusBadge.normal();
+    }
+  }
+
+  Color _statusColor(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return AquaColors.success;
+      case "warning":
+        return AquaColors.warning;
+      case "danger":
+        return AquaColors.danger;
+      default:
+        return AquaColors.primary;
+    }
+  }
+
+  Color _statusBackground(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return const Color(0xFFF0FDF4);
+      case "warning":
+        return const Color(0xFFFFF7ED);
+      case "danger":
+        return const Color(0xFFFEF2F2);
+      default:
+        return const Color(0xFFEFF6FF);
+    }
+  }
+
+  String _temperatureDescription(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return "Suhu Ideal";
+
+      case "warning":
+        return "Suhu Perlu Perhatian";
+
+      case "danger":
+        return "Suhu Tidak Aman";
+
+      default:
+        return "Tidak diketahui";
+    }
+  }
+
+  String _phDescription(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return "pH Stabil";
+
+      case "warning":
+        return "pH Perlu Perhatian";
+
+      case "danger":
+        return "pH Tidak Aman";
+
+      default:
+        return "Tidak diketahui";
+    }
+  }
+
+  String _turbidityDescription(String status) {
+    switch (status.toLowerCase()) {
+      case "normal":
+        return "Kualitas Air Baik";
+
+      case "warning":
+        return "Air Mulai Keruh";
+
+      case "danger":
+        return "Air Sangat Keruh";
+
+      default:
+        return "Tidak diketahui";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -64,15 +157,15 @@ class _MonitoringScreenState extends State<MonitoringScreen> {
         // Temperature
         _SensorCard(
           icon: Icons.thermostat_rounded,
-          iconBg: const Color(0xFFEFF6FF),
-          iconColor: AquaColors.primary,
+          iconBg: _statusBackground(widget.statusTemperature),
+          iconColor: _statusColor(widget.statusTemperature),
           title: 'Suhu Air',
           value: '${widget.temperature}',
           unit: '°C',
-          rangeText: 'Rentang Normal: 25.0°C - 30.0°C',
-          rangeColor: AquaColors.textSubtle,
-          badge: StatusBadge.normal(),
-          sparkColor: AquaColors.primary,
+          rangeText: _temperatureDescription(widget.statusTemperature),
+          rangeColor: _statusColor(widget.statusTemperature),
+          badge: _buildStatusBadge(widget.statusTemperature),
+          sparkColor: _statusColor(widget.statusTemperature),
           sparkPoints: const [
             Offset(0, 0.8),
             Offset(0.2, 0.4),
@@ -87,15 +180,15 @@ class _MonitoringScreenState extends State<MonitoringScreen> {
         // pH
         _SensorCard(
           icon: Icons.science_outlined,
-          iconBg: const Color(0xFFEFF6FF),
-          iconColor: AquaColors.primary,
+          iconBg: _statusBackground(widget.statusPh),
+          iconColor: _statusColor(widget.statusPh),
           title: 'Tingkat pH',
           value: '${widget.ph}',
           unit: 'pH',
-          rangeText: 'Rentang Ideal: 6.5 - 8.5',
-          rangeColor: AquaColors.textSubtle,
-          badge: StatusBadge.normal(),
-          sparkColor: AquaColors.primary,
+          rangeText: _phDescription(widget.statusPh),
+          rangeColor: _statusColor(widget.statusPh),
+          badge: _buildStatusBadge(widget.statusPh),
+          sparkColor: _statusColor(widget.statusPh),
           sparkPoints: const [
             Offset(0, 0.5),
             Offset(0.2, 0.6),
@@ -110,16 +203,16 @@ class _MonitoringScreenState extends State<MonitoringScreen> {
         // Turbidity
         _SensorCard(
           icon: Icons.waves_rounded,
-          iconBg: const Color(0xFFFEF2F2),
-          iconColor: AquaColors.danger,
+          iconBg: _statusBackground(widget.statusTurbidity),
+          iconColor: _statusColor(widget.statusTurbidity),
           title: 'Kekeruhan',
           value: '${widget.turbidity}',
           unit: 'NTU',
-          rangeText: 'Air sedikit keruh',
-          rangeColor: AquaColors.danger,
-          badge: StatusBadge.warning(),
-          sparkColor: AquaColors.danger,
-          borderLeft: AquaColors.danger,
+          rangeText: _turbidityDescription(widget.statusTurbidity),
+          rangeColor: _statusColor(widget.statusTurbidity),
+          badge: _buildStatusBadge(widget.statusTurbidity),
+          sparkColor: _statusColor(widget.statusTurbidity),
+          borderLeft: _statusColor(widget.statusTurbidity),
           sparkPoints: const [
             Offset(0, 0.1),
             Offset(0.15, 0.75),

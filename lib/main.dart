@@ -229,10 +229,12 @@ class _AppRootState extends State<_AppRoot> {
           onNavigate: (tab) => setState(() => _activeTab = tab),
         ),
       AppView.monitoring => MonitoringScreen(
-          key: const ValueKey('monitoring'),
           temperature: _temperature,
           ph: _ph,
           turbidity: _turbidity,
+          statusTemperature: _statusTemperature,
+          statusPh: _statusPh,
+          statusTurbidity: _statusTurbidity,
           lastSyncTime: _lastSync,
           onRefresh: _handleRefresh,
         ),
